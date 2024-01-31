@@ -1,11 +1,11 @@
 schema: olm.package
-name: rhtas-operator
-defaultChannel: stable
+name: operator
+defaultChannel: alpha
 ---
 entries:
 - name: rhtas-operator-v0.0.1
-name: stable
-package: rhtas-operator
+name: alpha
+package: operator
 schema: olm.channel
 ---
 schema: olm.bundle
