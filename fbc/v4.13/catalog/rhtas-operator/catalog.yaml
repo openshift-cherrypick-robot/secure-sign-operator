@@ -1,0 +1,18 @@
+Run an alpha subcommand
+
+Usage:
+  opm alpha [command]
+
+Available Commands:
+  bundle      Operator bundle commands
+  diff        Diff old and new catalog references into a declarative config
+  generate    Generate various artifacts for declarative config indexes
+  list        List contents of an index
+
+Flags:
+  -h, --help   help for alpha
+
+Global Flags:
+      --skip-tls   skip TLS certificate verification for container image registries while pulling bundles or index
+
+Use "opm alpha [command] --help" for more information about a command.
