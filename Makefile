@@ -243,6 +243,15 @@ productization-adjustments: ## Add feature labels and swap base image for konflu
 	echo '  features.operators.openshift.io/token-auth-azure: "false"' >> bundle/metadata/annotations.yaml
 	echo '  features.operators.openshift.io/token-auth-gcp: "false"' >> bundle/metadata/annotations.yaml
 
+.PHONY: find-operator-image
+find-operator-image: ## grabs the most recent operator image from the snapshots, assumes you have setup your kubeconfig and configs for konflux
+	APPLICATION_NAME="operator-1-0-gamma"
+	COMPONENT_NAME="operator-1-0-gamma"
+	kubectl config get-contexts
+	SNAPSHOT_NAME=$(kubectl get snapshots -l appstudio.openshift.io/application=$(APPLICATION_NAME),pac.test.appstudio.openshift.io/event-type=push --sort-by=.metadata.creationTimestamp --no-headers | tail -n 1)
+	IMAGE=$(kubectl get snapshot $(SNAPSHOT_NAME) -o json | jq '.spec.components[].containerImage' | grep "$(APPLICATION_NAME)/$(COMPONENT_NAME)")
+	echo $(IMAGE)
+
 .PHONY: bundle
 bundle: manifests kustomize operator-sdk ## Generate bundle manifests and metadata, then validate generated files.
 	$(OPERATOR_SDK) generate kustomize manifests -q
