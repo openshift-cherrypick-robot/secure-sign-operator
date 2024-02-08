@@ -32,19 +32,18 @@ type TrillianDB struct {
 	// default: true
 	Create bool `json:"create,omitempty"`
 	// PVC configuration
-	Pvc TrillianPvc `json:"pvc,omitempty"`
+	Pvc TrillianDbPvc `json:"pvc,omitempty"`
 	// Secret with values to be used to connect to an existing DB or to be used with the creation of a new DB
 	DatabaseSecretRef *v1.LocalObjectReference `json:"databaseSecretRef,omitempty"`
 }
 
-type TrillianPvc struct {
+type TrillianDbPvc struct {
 	// Retain the PVC after Trillian is deleted
 	Retain bool `json:"retain,omitempty"`
 	// PVC size for Trillian
 	//+kubebuilder:default:="5Gi"
 	Size string `json:"size,omitempty"`
 	// PVC name
-	//+kubebuilder:default:=trillian-mysql
 	Name string `json:"name,omitempty"`
 }
 

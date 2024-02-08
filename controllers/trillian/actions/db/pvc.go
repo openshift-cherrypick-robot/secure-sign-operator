@@ -33,6 +33,9 @@ func (i createPvcAction) CanHandle(instance *rhtasv1alpha1.Trillian) bool {
 func (i createPvcAction) Handle(ctx context.Context, instance *rhtasv1alpha1.Trillian) *action.Result {
 	var err error
 
+	if instance.Spec.Db.Pvc.Name == "" {
+		instance.Spec.Db.Pvc.Name = actions2.TrillianDbPvcName
+	}
 	// PVC does not exist, create a new one
 	i.Logger.V(1).Info("Creating new PVC")
 	i.Recorder.Event(instance, v1.EventTypeNormal, "PersistentVolumeCreated", "New PersistentVolume created")

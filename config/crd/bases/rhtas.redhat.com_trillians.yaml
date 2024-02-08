@@ -61,7 +61,6 @@ spec:
                     description: PVC configuration
                     properties:
                       name:
-                        default: trillian-mysql
                         description: PVC name
                         type: string
                       retain:
