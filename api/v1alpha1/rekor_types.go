@@ -13,14 +13,26 @@ type RekorSpec struct {
 	TreeID *int64 `json:"treeID,omitempty"`
 	// Define whether you want to export service or not
 	ExternalAccess ExternalAccess `json:"externalAccess,omitempty"`
-	// Persistent volume claim name to bound with Rekor component
-	PvcName string `json:"pvcName,omitempty"`
+	// Persistent volume claim configuration
+	Pvc RekorPvc `json:"pvc,omitempty"`
 	//Enable Service monitors for rekor
 	Monitoring MonitoringConfig `json:"monitoring,omitempty"`
 	//Rekor Search UI
 	RekorSearchUI RekorSearchUI `json:"rekorSearchUI,omitempty"`
 	// Signer configuration
 	Signer RekorSigner `json:"signer,omitempty"`
+}
+
+type RekorPvc struct {
+	// Size of the persistent volume claim
+	//+kubebuilder:default:="5Gi"
+	Size string `json:"size,omitempty"`
+	// Retain policy for the persistent volume claim
+	//+kubebuilder:default:=true
+	Retain bool `json:"retain,omitempty"`
+	// Name of the PVC
+	//+kubebuilder:default:="rekor-pvc"
+	Name string `json:"name,omitempty"`
 }
 
 type RekorSigner struct {
