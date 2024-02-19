@@ -415,6 +415,9 @@ spec:
                     required:
                     - enabled
                     type: object
+                  externalTrillian:
+                    description: Trillian External Log Server
+                    type: string
                   monitoring:
                     description: Enable Service monitors for rekor
                     properties:

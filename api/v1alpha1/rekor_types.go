@@ -27,6 +27,8 @@ type RekorSpec struct {
 	// BackFillRedis CronJob Configuration
 	//+kubebuilder:default:={enabled: true, schedule: "0 0 * * *"}
 	BackFillRedis BackFillRedis `json:"backFillRedis,omitempty"`
+	// Trillian External Log Server
+	ExternalTrillian string `json:"externalTrillian,omitempty"`
 }
 
 type RekorSigner struct {

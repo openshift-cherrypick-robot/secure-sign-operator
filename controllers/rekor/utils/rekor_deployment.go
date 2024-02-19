@@ -19,9 +19,16 @@ func CreateRekorDeployment(instance *v1alpha1.Rekor, dpName string, sa string, l
 		return nil, errors.New("reference to trillian TreeID not set")
 	}
 	env := make([]core.EnvVar, 0)
+
+	trillianNamespace := instance.Namespace
+
+	if instance.Spec.ExternalTrillian != "" {
+		trillianNamespace = instance.Spec.ExternalTrillian
+	}
+
 	appArgs := []string{
 		"serve",
-		"--trillian_log_server.address=trillian-logserver." + instance.Namespace + ".svc",
+		"--trillian_log_server.address=trillian-logserver." + trillianNamespace + ".svc",
 		"--trillian_log_server.port=8091",
 		"--trillian_log_server.sharding_config=/sharding/sharding-config.yaml",
 		"--redis_server.address=rekor-redis",
