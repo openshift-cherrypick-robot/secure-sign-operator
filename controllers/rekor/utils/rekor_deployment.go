@@ -20,12 +20,10 @@ func CreateRekorDeployment(instance *v1alpha1.Rekor, dpName string, sa string, l
 	}
 	env := make([]core.EnvVar, 0)
 
-	
-
 	appArgs := []string{
 		"serve",
-		"--trillian_log_server.address=" + trillianAddress,
-		"--trillian_log_server.port="+ trillianPort,
+		"--trillian_log_server.address=" + instance.Spec.TrillianAddress,
+		"--trillian_log_server.port=" + instance.Spec.TrillianPort,
 		"--trillian_log_server.sharding_config=/sharding/sharding-config.yaml",
 		"--redis_server.address=rekor-redis",
 		"--redis_server.port=6379",
