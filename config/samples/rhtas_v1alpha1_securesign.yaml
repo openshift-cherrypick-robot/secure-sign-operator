@@ -15,6 +15,8 @@ spec:
   trillian:
     database:
       create: true
+    trillianAddress: "trillian-address"
+    trillienPort: "8091"
   fulcio:
     externalAccess:
       enabled: true
