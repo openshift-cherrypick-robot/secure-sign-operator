@@ -29,12 +29,14 @@ type RekorSpec struct {
 	BackFillRedis BackFillRedis `json:"backFillRedis,omitempty"`
 	// Trillian Log Server End point
 	//+kubebuilder:default:="trillian-logserver"
+	//+optional
 	TrillianAddress string `json:"trillianAddress,omitempty"`
 	// Trillian Log Server End point
 	//+kubebuilder:validation:Minimum:=1
 	//+kubebuilder:validation:Maximum:=65535
 	//+kubebuilder:default:=8091
-	TrillianPort int32 `json:"trillianPort,omitempty"`
+	//+optional
+	TrillianPort *int32 `json:"trillianPort,omitempty"`
 }
 
 type RekorSigner struct {
