@@ -6,7 +6,7 @@ metadata:
     app.kubernetes.io/instance: securesign-sample
     app.kubernetes.io/part-of: trusted-artifact-signer
   name: securesign-sample
-  namespace: rhtas-operator
+  namespace: openshift-rhtas-operator
 spec:
   rekor:
     externalAccess:
@@ -22,8 +22,8 @@ spec:
     config:
       OIDCIssuers:
         - ClientID: "trusted-artifact-signer"
-          IssuerURL: "https://your-oidc-issuer-url"
-          Issuer: "https://your-oidc-issuer-url"
+          IssuerURL: "https://keycloak-keycloak-system.apps.rhamilto.devcluster.openshift.com/auth/realms/trusted-artifact-signer"
+          Issuer: "https://keycloak-keycloak-system.apps.rhamilto.devcluster.openshift.com/auth/realms/trusted-artifact-signer"
           Type: "email"
     certificate:
       organizationName: Red Hat
