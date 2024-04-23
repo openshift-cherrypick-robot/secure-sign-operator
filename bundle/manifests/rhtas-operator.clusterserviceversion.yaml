@@ -2,16 +2,6 @@ apiVersion: operators.coreos.com/v1alpha1
 kind: ClusterServiceVersion
 metadata:
   annotations:
-    features.operators.openshift.io/disconnected: "false"
-    features.operators.openshift.io/fips-compliant: "false"
-    features.operators.openshift.io/proxy-aware: "false"
-    features.operators.openshift.io/cnf: "false"
-    features.operators.openshift.io/cni: "false"
-    features.operators.openshift.io/csi: "false"
-    features.operators.openshift.io/tls-profiles: "false"
-    features.operators.openshift.io/token-auth-aws: "false"
-    features.operators.openshift.io/token-auth-azure: "false"
-    features.operators.openshift.io/token-auth-gcp: "false"
     alm-examples: |-
       [
         {
@@ -85,9 +75,11 @@ metadata:
               "app.kubernetes.io/name": "securesign-sample",
               "app.kubernetes.io/part-of": "trusted-artifact-signer"
             },
-            "name": "securesign-sample"
+            "name": "securesign-sample",
+            "namespace": "rhtas-operator"
           },
           "spec": {
+            "analytics": false,
             "ctlog": null,
             "fulcio": {
               "certificate": {
@@ -190,9 +182,23 @@ metadata:
         }
       ]
     capabilities: Basic Install
-    createdAt: "2024-02-27T11:46:52Z"
-    operators.operatorframework.io/builder: operator-sdk-v1.32.0
+
+    containerImage: registry.redhat.io/rhtas/rhtas-rhel9-operator@sha256:2d2a22420249890a64b42c663d57c4b5c6638e0597fe74b01b275ba915e53ea2
+    createdAt: "2024-04-19T14:55:15Z"
+    features.operators.openshift.io/cnf: "false"
+    features.operators.openshift.io/cni: "false"
+    features.operators.openshift.io/csi: "false"
+    features.operators.openshift.io/disconnected: "false"
+    features.operators.openshift.io/fips-compliant: "false"
+    features.operators.openshift.io/proxy-aware: "false"
+    features.operators.openshift.io/tls-profiles: "false"
+    features.operators.openshift.io/token-auth-aws: "false"
+    features.operators.openshift.io/token-auth-azure: "false"
+    features.operators.openshift.io/token-auth-gcp: "false"
+    operators.operatorframework.io/builder: operator-sdk-v1.34.1
     operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
+    repository: https://github.com/securesign/secure-sign-operator
+    support: Red Hat
   name: rhtas-operator.v1.0.0
   namespace: placeholder
 spec:
@@ -437,6 +443,13 @@ spec:
         - apiGroups:
           - operator.openshift.io
           resources:
+          - consoles
+          verbs:
+          - get
+          - list
+        - apiGroups:
+          - operator.openshift.io
+          resources:
           - ingresscontrollers
           verbs:
           - create
@@ -453,6 +466,7 @@ spec:
           verbs:
           - create
           - delete
+          - deletecollection
           - get
           - list
           - patch
@@ -756,7 +770,7 @@ spec:
                 - --leader-elect
                 command:
                 - /manager
-                image: quay.io/redhat-user-workloads/rhtas-tenant/operator/rhtas-operator@sha256:e9c66d586d773edc59d80d0d75731d345da10c8d5accdc35a5adb2ebfb2b3897
+                image: registry.redhat.io/rhtas/rhtas-rhel9-operator@sha256:2d2a22420249890a64b42c663d57c4b5c6638e0597fe74b01b275ba915e53ea2
                 livenessProbe:
                   httpGet:
                     path: /healthz
@@ -773,7 +787,7 @@ spec:
                 resources:
                   limits:
                     cpu: 500m
-                    memory: 128Mi
+                    memory: 256Mi
                   requests:
                     cpu: 10m
                     memory: 64Mi

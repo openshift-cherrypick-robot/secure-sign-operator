@@ -3,9 +3,13 @@ name: rhtas-operator
 defaultChannel: stable
 ---
 entries:
-- name: rhtas-operator.v1.0.0
-  replaces: rhtas-operator.v0.0.2
-- name: rhtas-operator.v0.0.2
+  - name: rhtas-operator.v0.0.2
+name: alpha
+package: rhtas-operator
+schema: olm.channel
+---
+entries:
+  - name: rhtas-operator.v1.0.0
 name: stable
 package: rhtas-operator
 schema: olm.channel
@@ -15,6 +19,6 @@ image: registry.redhat.io/rhtas-tech-preview/sigstore-operator-bundle@sha256:1c0
 # rhtas-bundle-registry v0.0.2
 ---
 schema: olm.bundle
-image: quay.io/redhat-user-workloads/rhtas-tenant/operator/rhtas-operator-bundle@sha256:a79f2993ed5e65db3d380fc8a8b9fce7ac481fa5189bd92e9946d20b7ea0e1ec
+image: registry.redhat.io/rhtas/rhtas-operator-bundle@sha256:436bd1212fdd707987f3f2158d18912a85493299218e7ab6ad5cb212076ffb3d
 # rhtas-bundle-registry v1.0.0
 ---

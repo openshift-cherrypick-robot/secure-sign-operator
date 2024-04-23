@@ -56,9 +56,31 @@ spec:
           spec:
             description: SecuresignSpec defines the desired state of Securesign
             properties:
+              analytics:
+                default: false
+                description: If true, the Operator will create segment backup job
+                  and cronjob and required RBAC
+                type: boolean
+                x-kubernetes-validations:
+                - message: Feature cannot be disabled
+                  rule: (self || !oldSelf)
               ctlog:
                 description: CTlogSpec defines the desired state of CTlog component
                 properties:
+                  monitoring:
+                    description: Enable Service monitors for ctlog
+                    properties:
+                      enabled:
+                        default: false
+                        description: If true, the Operator will create monitoring
+                          resources
+                        type: boolean
+                        x-kubernetes-validations:
+                        - message: Feature cannot be disabled
+                          rule: (self || !oldSelf)
+                    required:
+                    - enabled
+                    type: object
                   privateKeyPasswordRef:
                     description: Password to decrypt private key
                     properties:
@@ -320,11 +342,13 @@ spec:
                           - Issuer
                           - Type
                           type: object
-                        minItems: 1
                         type: array
-                    required:
-                    - OIDCIssuers
                     type: object
+                    x-kubernetes-validations:
+                    - message: At least one of OIDCIssuers or MetaIssuers must be
+                        defined
+                      rule: (has(self.OIDCIssuers) && (size(self.OIDCIssuers) > 0))
+                        || (has(self.MetaIssuers) && (size(self.MetaIssuers) > 0))
                   externalAccess:
                     description: Define whether you want to export service or not
                     properties:
@@ -615,6 +639,20 @@ spec:
                     x-kubernetes-validations:
                     - message: databaseSecretRef cannot be empty
                       rule: ((!self.create && self.databaseSecretRef != null) || self.create)
+                  monitoring:
+                    description: Enable Monitoring for Logsigner and Logserver
+                    properties:
+                      enabled:
+                        default: false
+                        description: If true, the Operator will create monitoring
+                          resources
+                        type: boolean
+                        x-kubernetes-validations:
+                        - message: Feature cannot be disabled
+                          rule: (self || !oldSelf)
+                    required:
+                    - enabled
+                    type: object
                 type: object
               tuf:
                 default:
@@ -687,6 +725,8 @@ spec:
                     minimum: 1
                     type: integer
                 type: object
+            required:
+            - analytics
             type: object
           status:
             description: SecuresignStatus defines the observed state of Securesign

@@ -6,6 +6,7 @@ metadata:
     app.kubernetes.io/instance: securesign-sample
     app.kubernetes.io/part-of: trusted-artifact-signer
   name: securesign-sample
+  namespace: rhtas-operator
 spec:
   rekor:
     externalAccess:
@@ -35,4 +36,5 @@ spec:
   tuf:
     externalAccess:
       enabled: true
+  analytics: false
   ctlog:
