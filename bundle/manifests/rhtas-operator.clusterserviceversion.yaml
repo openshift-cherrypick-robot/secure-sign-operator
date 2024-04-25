@@ -70,13 +70,15 @@ metadata:
           "apiVersion": "rhtas.redhat.com/v1alpha1",
           "kind": "Securesign",
           "metadata": {
+            "annotations": {
+              "rhtas.redhat.com/metrics": "true"
+            },
             "labels": {
               "app.kubernetes.io/instance": "securesign-sample",
               "app.kubernetes.io/name": "securesign-sample",
               "app.kubernetes.io/part-of": "trusted-artifact-signer"
             },
-            "name": "securesign-sample",
-            "namespace": "rhtas-operator"
+            "name": "securesign-sample"
           },
           "spec": {
             "analytics": false,
@@ -101,7 +103,7 @@ metadata:
                 "enabled": true
               },
               "monitoring": {
-                "enabled": false
+                "enabled": true
               }
             },
             "rekor": {
@@ -109,7 +111,7 @@ metadata:
                 "enabled": true
               },
               "monitoring": {
-                "enabled": false
+                "enabled": true
               }
             },
             "trillian": {
@@ -183,8 +185,6 @@ metadata:
       ]
     capabilities: Basic Install
 
-    containerImage: registry.redhat.io/rhtas/rhtas-rhel9-operator@sha256:2d2a22420249890a64b42c663d57c4b5c6638e0597fe74b01b275ba915e53ea2
-    createdAt: "2024-04-19T14:55:15Z"
     features.operators.openshift.io/cnf: "false"
     features.operators.openshift.io/cni: "false"
     features.operators.openshift.io/csi: "false"
@@ -195,11 +195,11 @@ metadata:
     features.operators.openshift.io/token-auth-aws: "false"
     features.operators.openshift.io/token-auth-azure: "false"
     features.operators.openshift.io/token-auth-gcp: "false"
-    operators.operatorframework.io/builder: operator-sdk-v1.34.1
+    operators.operatorframework.io/builder: operator-sdk-v1.32.0
     operators.operatorframework.io/project_layout: go.kubebuilder.io/v3
     repository: https://github.com/securesign/secure-sign-operator
     support: Red Hat
-  name: rhtas-operator.v1.0.0
+  name: rhtas-operator.v1.0.1
   namespace: placeholder
 spec:
   apiservicedefinitions: {}
@@ -407,6 +407,14 @@ spec:
         - apiGroups:
           - monitoring.coreos.com
           resources:
+          - prometheuses/api
+          verbs:
+          - create
+          - get
+          - update
+        - apiGroups:
+          - monitoring.coreos.com
+          resources:
           - servicemonitors
           verbs:
           - create
@@ -479,6 +487,7 @@ spec:
           verbs:
           - create
           - delete
+          - deletecollection
           - get
           - list
           - patch
@@ -491,6 +500,7 @@ spec:
           verbs:
           - create
           - delete
+          - deletecollection
           - get
           - list
           - patch
@@ -503,6 +513,7 @@ spec:
           verbs:
           - create
           - delete
+          - deletecollection
           - get
           - list
           - patch
@@ -744,9 +755,8 @@ spec:
               - args:
                 - --secure-listen-address=0.0.0.0:8443
                 - --upstream=http://127.0.0.1:8080/
-                - --logtostderr=true
                 - --v=0
-                image: gcr.io/kubebuilder/kube-rbac-proxy@sha256:d4883d7c622683b3319b5e6b3a7edfbf2594c18060131a8bf64504805f875522
+                image: registry.redhat.io/openshift4/ose-kube-rbac-proxy@sha256:fe54e0fd550746460d2ae61432aac192106ea495bcadca7377ea6a8141834c2f
                 name: kube-rbac-proxy
                 ports:
                 - containerPort: 8443
@@ -770,7 +780,7 @@ spec:
                 - --leader-elect
                 command:
                 - /manager
-                image: registry.redhat.io/rhtas/rhtas-rhel9-operator@sha256:2d2a22420249890a64b42c663d57c4b5c6638e0597fe74b01b275ba915e53ea2
+                image: registry.redhat.io/rhtas/rhtas-rhel9-operator@sha256:0c2da12e405de8c3553c5d1912dd83d0f3cb0857cf5727c7d335d5ba6d5991b5
                 livenessProbe:
                   httpGet:
                     path: /healthz
@@ -872,4 +882,4 @@ spec:
   provider:
     name: Red Hat
     url: https://github.com/securesign/secure-sign-operator
-  version: 1.0.0
+  version: 1.0.1
