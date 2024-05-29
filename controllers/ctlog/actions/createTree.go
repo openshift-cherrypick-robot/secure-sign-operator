@@ -49,7 +49,7 @@ func (i createTrillianTreeAction) Handle(ctx context.Context, instance *rhtasv1a
 		})
 		return i.FailedWithStatusUpdate(ctx, fmt.Errorf("could not find trillian instance: %w", err), instance)
 	}
-	tree, err := common.CreateTrillianTree(ctx, "ctlog-tree", trillUrl+":8091")
+	tree, err := common.CreateTrillianTree(ctx, "ctlog-tree", trillUrl+":8091",instance.Spec.CreateTreeDeadline)
 	if err != nil {
 		meta.SetStatusCondition(&instance.Status.Conditions, metav1.Condition{
 			Type:    constants.Ready,

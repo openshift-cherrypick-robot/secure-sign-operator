@@ -44,7 +44,7 @@ func (i createTrillianTreeAction) Handle(ctx context.Context, instance *rhtasv1a
 	if err != nil {
 		return i.Failed(err)
 	}
-	tree, err := common.CreateTrillianTree(ctx, "rekor-tree", trillUrl+":8091")
+	tree, err := common.CreateTrillianTree(ctx, "rekor-tree", trillUrl+":8091",instance.Spec.CreateTreeDeadline)
 	if err != nil {
 		meta.SetStatusCondition(&instance.Status.Conditions, metav1.Condition{
 			Type:    actions.ServerCondition,
