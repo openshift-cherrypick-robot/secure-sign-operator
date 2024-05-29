@@ -28,6 +28,8 @@ type RekorSpec struct {
 	// BackFillRedis CronJob Configuration
 	//+kubebuilder:default:={enabled: true, schedule: "0 0 * * *"}
 	BackFillRedis BackFillRedis `json:"backFillRedis,omitempty"`
+	//+kubebuilder:default:=1200
+	CreateTreeDeadline int64 `json:"createTreeDeadline,omitempty"`
 }
 
 type RekorSigner struct {

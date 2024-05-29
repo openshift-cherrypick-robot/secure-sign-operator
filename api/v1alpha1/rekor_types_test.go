@@ -198,7 +198,7 @@ var _ = Describe("Rekor", func() {
 				It("outputs the CR", func() {
 					storage := k8sresource.MustParse("987Gi")
 					tree := int64(1269875)
-
+					deadline := int64(1200)
 					rekorInstance = Rekor{
 						ObjectMeta: metav1.ObjectMeta{
 							Name:      "rekor-full-manifest",
@@ -219,7 +219,8 @@ var _ = Describe("Rekor", func() {
 								Enabled:  utils.Pointer(true),
 								Schedule: "* */2 * * 0-3",
 							},
-							TreeID: &tree,
+							TreeID:             &tree,
+							CreateTreeDeadline: deadline,
 							Pvc: Pvc{
 								Name:         "name",
 								Size:         &storage,

@@ -37,6 +37,9 @@ type CTlogSpec struct {
 
 	//Enable Service monitors for ctlog
 	Monitoring MonitoringConfig `json:"monitoring,omitempty"`
+
+	//+kubebuilder:default:=1200
+	CreateTreeDeadline int64 `json:"createTreeDeadline,omitempty"`
 }
 
 // CTlogStatus defines the observed state of CTlog component

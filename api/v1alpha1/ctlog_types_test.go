@@ -86,6 +86,7 @@ var _ = Describe("CTlog", func() {
 							Namespace: "default",
 						},
 					}
+					expectedCTlogInstance.Spec.CreateTreeDeadline = 1200
 
 					Expect(k8sClient.Create(context.Background(), &ctlogInstance)).To(Succeed())
 					fetched := &CTlog{}
@@ -97,7 +98,6 @@ var _ = Describe("CTlog", func() {
 			When("CR is fully populated", func() {
 				It("outputs the CR", func() {
 					tree := int64(1269875)
-
 					ctlogInstance = CTlog{
 						ObjectMeta: metav1.ObjectMeta{
 							Name:      "ctlog-full-manifest",
@@ -145,18 +145,20 @@ var _ = Describe("CTlog", func() {
 
 				It("sets spec.pvc.storage if spec.pvc is partially set", func() {
 					tree := int64(1269875)
+					deadline := int64(1200)
 					ctlogInstance = CTlog{
 						ObjectMeta: metav1.ObjectMeta{
 							Name:      "ctlog-storage",
 							Namespace: "default",
 						},
 						Spec: CTlogSpec{
-							TreeID: &tree,
+							TreeID:             &tree,
+							CreateTreeDeadline: deadline,
 						},
 					}
 
 					expectedCTlogInstance.Spec.TreeID = &tree
-
+					expectedCTlogInstance.Spec.CreateTreeDeadline = deadline
 					Expect(k8sClient.Create(context.Background(), &ctlogInstance)).To(Succeed())
 					fetchedCTlog := &CTlog{}
 					Expect(k8sClient.Get(context.Background(), getKey(&ctlogInstance), fetchedCTlog)).To(Succeed())
